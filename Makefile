@@ -8,16 +8,13 @@ LD = avr-gcc -mmcu=$(MCU)
 OBJCOPY = avr-objcopy
 PROGRAM = avrdude -F -V -c arduino -p $(PARTNO) -P $(SERIAL_PORT) -b 115200
 
-OBJFILES = $(patsubst %.c,build/%.o,$(wildcard src/*.c))
+OBJFILES = $(patsubst %.c,%.o,$(wildcard src/*.c))
 
 .PHONY: all program backup clean
 
 all: program
 
-build/src:
-	mkdir -p build/src
-
-build/%.o: %.c build/src
+%.o: %.c
 	$(CC) -o $@ $<
 
 %.hex: %.bin
@@ -38,4 +35,4 @@ backup:
 
 clean:
 	@echo "Cleaning up"
-	-rm -f program.hex program.bin build/src/*.o
+	-rm -f program.hex program.bin src/*.o
