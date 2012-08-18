@@ -10,9 +10,9 @@ PROGRAM = avrdude -F -V -c arduino -p $(PARTNO) -P $(SERIAL_PORT) -b 115200
 
 OBJFILES = $(patsubst %.c,build/%.o,$(wildcard src/*.c))
 
-.PHONY: default program clean
+.PHONY: all program backup clean
 
-default: program
+all: program
 
 build/src:
 	mkdir -p build/src
@@ -37,4 +37,5 @@ backup:
 	$(PROGRAM) -U flash:r:$(BACKUP_FILE):i
 
 clean:
-	rm -f program.hex program.bin build/src/*.o 
+	@echo "Cleaning up"
+	-rm -f program.hex program.bin build/src/*.o
