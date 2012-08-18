@@ -3,10 +3,10 @@ PARTNO = $(MCU)
 F_CPU = 16000000UL
 BACKUP_FILE = backup.hex
 
-CC = avr-gcc -DTARGET -DF_CPU=$(F_CPU) -mmcu=$(MCU) -Iinclude/ -Wall -Os -c
+CC = avr-gcc -mmcu=$(MCU) -DF_CPU=$(F_CPU) -DTARGET -Iinclude/ -Wall -Os -c
 LD = avr-gcc -mmcu=$(MCU)
 OBJCOPY = avr-objcopy
-PROGRAM = avrdude -F -V -c arduino -p $(PARTNO) -P $(SERIAL_PORT) -b 115200
+FLASH = avrdude -F -V -c arduino -p $(PARTNO) -P $(SERIAL_PORT) -b 115200
 
 OBJFILES = $(patsubst %.c,%.o,$(wildcard src/*.c))
 
@@ -28,10 +28,10 @@ serial_port:
 		(echo "Error: SERIAL_PORT is not defined" && false)
 
 flash: serial_port program.hex
-	$(PROGRAM) -U flash:w:program.hex
+	$(FLASH) -U flash:w:program.hex
 
 backup:
-	$(PROGRAM) -U flash:r:$(BACKUP_FILE):i
+	$(FLASH) -U flash:r:$(BACKUP_FILE):i
 
 clean:
 	@echo "Cleaning up"
