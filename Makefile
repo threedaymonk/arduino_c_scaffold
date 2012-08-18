@@ -10,9 +10,9 @@ PROGRAM = avrdude -F -V -c arduino -p $(PARTNO) -P $(SERIAL_PORT) -b 115200
 
 OBJFILES = $(patsubst %.c,%.o,$(wildcard src/*.c))
 
-.PHONY: all program backup clean
+.PHONY: all flash backup clean
 
-all: program
+all: flash
 
 %.o: %.c
 	$(CC) -o $@ $<
@@ -27,7 +27,7 @@ serial_port:
 	@/usr/bin/test $(SERIAL_PORT) ||\
 		(echo "Error: SERIAL_PORT is not defined" && false)
 
-program: serial_port program.hex
+flash: serial_port program.hex
 	$(PROGRAM) -U flash:w:program.hex
 
 backup:
