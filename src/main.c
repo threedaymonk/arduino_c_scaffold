@@ -58,7 +58,7 @@ ISR(TIMER0_OVF_vect)
 {
   /* preload the timer. */
   TCNT0 = TIMER_RESET_VAL;
-  
+
   /* call our periodic task. */
   task();
 }
