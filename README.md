@@ -69,24 +69,24 @@ be cycling on and off with durations of about 1 second.
 
 ## Identifying the serial port
 
-The easiest way to find the serial port is to type:
+The easiest way to find the serial port is to type
 
 ```sh
-$ tail -n0 -f /var/log/syslog | grep -m1 tty
+$ ls /dev/serial/by-id/*Arduino*
 ```
 
-and plug in the Arduino. You'll see something like this:
+You can set up the `SERIAL_PORT` environment variable in most shells by typing
 
-    Aug 18 13:44:44 name-of-computer kernel: [499545.444534] cdc_acm 2-1.2.4:1.0: ttyACM0: USB ACM device
-
-in which case the serial port is `/dev/ttyACM0`.
+```sh
+$ export SERIAL_PORT=`ls /dev/serial/by-id/*Arduino*`
+```
 
 The serial port must also be accessible to the user. If your user is already a
 member of the `dialout` group, you can stop there. Otherwise, just change the
 group of the serial port for now:
 
 ```sh
-$ sudo chown :sudo /dev/ttyACM0
+$ sudo chown :sudo /dev/serial/by-id/*Arduino*
 ```
 
 You can add yourself to the `dialout` group for next time, but it won't take
