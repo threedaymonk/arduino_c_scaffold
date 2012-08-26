@@ -3,7 +3,7 @@ PARTNO = $(MCU)
 F_CPU = 16000000UL
 BACKUP_FILE = backup.hex
 
-CC = avr-gcc -mmcu=$(MCU) -DF_CPU=$(F_CPU) -DTARGET -Iinclude/ -Wall -Os -c
+CC = avr-gcc -mmcu=$(MCU) -DF_CPU=$(F_CPU) -DTARGET -Wall -Os -c
 LD = avr-gcc -mmcu=$(MCU)
 OBJCOPY = avr-objcopy
 FLASH = avrdude -F -V -c arduino -p $(PARTNO) -P $(SERIAL_PORT) -b 115200
