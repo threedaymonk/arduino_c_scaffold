@@ -2,6 +2,7 @@ MCU = atmega328p
 PARTNO = $(MCU)
 F_CPU = 16000000UL
 BACKUP_FILE = backup.hex
+SERIAL_PORT = /dev/arduino
 
 CC = avr-gcc -mmcu=$(MCU) -DF_CPU=$(F_CPU) -DTARGET -Wall -Os -c
 LD = avr-gcc -mmcu=$(MCU)
