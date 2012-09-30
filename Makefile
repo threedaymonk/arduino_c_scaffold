@@ -3,11 +3,16 @@ PARTNO = $(MCU)
 F_CPU = 16000000UL
 BACKUP_FILE = backup.hex
 SERIAL_PORT = /dev/arduino
+PROGRAMMER = arduino
+
+ifeq ($(PROGRAMMER),arduino)
+AVRDUDE_OPTS = -P $(SERIAL_PORT) -b 115200
+endif
 
 CC = avr-gcc -mmcu=$(MCU) -DF_CPU=$(F_CPU) -DTARGET -Wall -Os -c
 LD = avr-gcc -mmcu=$(MCU)
 OBJCOPY = avr-objcopy
-FLASH = avrdude -F -V -c arduino -p $(PARTNO) -P $(SERIAL_PORT) -b 115200
+FLASH = avrdude -F -V -p $(PARTNO) -c $(PROGRAMMER) $(AVRDUDE_OPTS)
 
 OBJFILES = $(patsubst %.c,%.o,$(wildcard src/*.c))
 
@@ -24,11 +29,7 @@ all: flash
 program.bin: $(OBJFILES)
 	$(LD) $^ -o $@
 
-serial_port:
-	@/usr/bin/test $(SERIAL_PORT) ||\
-		(echo "Error: SERIAL_PORT is not defined" && false)
-
-flash: serial_port program.hex
+flash: program.hex
 	$(FLASH) -U flash:w:program.hex
 
 backup:
